@@ -46,6 +46,9 @@ git rm -rf . 2>/dev/null || true
 # 元のブランチからdocs/の内容をチェックアウト
 git checkout $CURRENT_BRANCH -- docs/
 
+# install.shもチェックアウト
+git checkout $CURRENT_BRANCH -- install.sh
+
 # docs/の内容をルートに移動
 mv docs/* .
 rmdir docs

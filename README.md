@@ -70,7 +70,7 @@ python figma_tui.py
 
 ## デモ
 
-統合デモページ: https://provider.maekawa.dev/tui-tools/
+統合デモページ: https://provider.maekawa.dev/tui-tools/ （設定中）
 
 ## 必要条件
 
