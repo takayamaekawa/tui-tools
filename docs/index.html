@@ -6,6 +6,11 @@
     <title>TUI Tools Collection</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
+    <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877828132102103"
+        crossorigin="anonymous">
+    </script>
 </head>
 <body>
     <div class="container">
@@ -50,7 +55,7 @@
                     <h2>🚀 クイックスタート</h2>
                     <div class="code-block">
                         <pre><code># リポジトリをクローン
-git clone --recursive https://github.com/your-username/tui-tools.git
+git clone --recursive https://github.com/takayamaekawa/tui-tools.git
 cd tui-tools
 
 # 全ツールをインストール
@@ -84,7 +89,7 @@ cd tui-tools
                         </div>
                         <div class="tool-actions">
                             <a href="demos/discord-exporter.html" class="btn btn-demo">デモを見る</a>
-                            <a href="https://github.com/your-username/discord-exporter-tui" class="btn btn-source">ソースコード</a>
+                            <a href="https://github.com/takayamaekawa/discord-exporter-tui" class="btn btn-source">ソースコード</a>
                         </div>
                     </div>
 
@@ -106,7 +111,7 @@ cd tui-tools
                         </div>
                         <div class="tool-actions">
                             <a href="demos/figma-exporter.html" class="btn btn-demo">デモを見る</a>
-                            <a href="https://github.com/your-username/figma-image-exporter-tui" class="btn btn-source">ソースコード</a>
+                            <a href="https://github.com/takayamaekawa/figma-image-exporter-tui" class="btn btn-source">ソースコード</a>
                         </div>
                     </div>
                 </section>
@@ -125,7 +130,6 @@ cd tui-tools
                             </div>
                             <a href="demos/discord-exporter.html" class="btn btn-secondary">詳細なデモを見る</a>
                         </div>
-                        
                         <div class="demo-card">
                             <h3>Figma Image Exporter TUI</h3>
                             <div class="demo-placeholder">
@@ -156,27 +160,34 @@ cd tui-tools
             <div id="download" class="tab-content">
                 <section class="download-section">
                     <h2>📦 ダウンロード</h2>
-                    
                     <div class="download-option">
                         <h3>🔄 Git Clone（推奨）</h3>
                         <p>サブモジュールを含む完全なリポジトリをクローンします。</p>
                         <div class="code-block">
-                            <pre><code>git clone --recursive https://github.com/your-username/tui-tools.git</code></pre>
+                            <pre><code># 推奨: 1行でインストール
+curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash
+
+# または個別ツール
+curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash -s discord-exporter
+curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash -s figma-exporter
+
+# 手動インストール
+git clone --recursive https://github.com/takayamaekawa/tui-tools.git</code></pre>
                         </div>
                     </div>
 
                     <div class="download-option">
                         <h3>📁 ZIP ダウンロード</h3>
                         <p>最新のソースコードをZIPファイルでダウンロードします。</p>
-                        <a href="https://github.com/your-username/tui-tools/archive/refs/heads/main.zip" class="btn btn-primary">ZIPをダウンロード</a>
+                        <a href="https://github.com/takayamaekawa/tui-tools/archive/refs/heads/main.zip" class="btn btn-primary">ZIPをダウンロード</a>
                     </div>
 
                     <div class="download-option">
                         <h3>🔧 個別ツール</h3>
                         <p>個別のツールのみが必要な場合：</p>
                         <div class="individual-tools">
-                            <a href="https://github.com/your-username/discord-exporter-tui" class="btn btn-outline">Discord Exporter TUI</a>
-                            <a href="https://github.com/your-username/figma-image-exporter-tui" class="btn btn-outline">Figma Exporter TUI</a>
+                            <a href="https://github.com/takayamaekawa/discord-exporter-tui" class="btn btn-outline">Discord Exporter TUI</a>
+                            <a href="https://github.com/takayamaekawa/figma-image-exporter-tui" class="btn btn-outline">Figma Exporter TUI</a>
                         </div>
                     </div>
                 </section>
@@ -204,14 +215,13 @@ cd tui-tools
                 </section>
             </div>
         </main>
-
         <footer>
             <div class="footer-content">
                 <p>&copy; 2024 TUI Tools Collection. Created with ❤️ for terminal enthusiasts.</p>
                 <div class="footer-links">
-                    <a href="https://github.com/your-username/tui-tools">GitHub</a>
-                    <a href="https://github.com/your-username/tui-tools/issues">Issues</a>
-                    <a href="https://github.com/your-username/tui-tools/blob/main/LICENSE">License</a>
+                    <a href="https://github.com/takayamaekawa/tui-tools">GitHub</a>
+                    <a href="https://github.com/takayamaekawa/tui-tools/issues">Issues</a>
+                    <a href="https://github.com/takayamaekawa/tui-tools/blob/main/LICENSE">License</a>
                 </div>
             </div>
         </footer>

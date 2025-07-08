@@ -12,9 +12,33 @@ TUIベースのツール集です。各ツールは独立したサブモジュ�
 - **説明**: FigmaのURLから画像を取得してassetsフォルダに保存するTUIツール
 - **機能**: 画像リンク取得、選択式ダウンロード、一括ダウンロード
 
-## インストール
+## 🚀 クイックインストール（推奨）
+
+### Discord Exporter TUI
+```bash
+# 1行でインストール
+curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash -s discord-exporter
+```
+
+### Figma Image Exporter TUI
+```bash
+# 1行でインストール
+curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash -s figma-exporter
+```
+
+### 全ツール一括インストール
+```bash
+# すべてのツールを一括インストール
+curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash
+```
+
+## インストール（手動）
 
 ```bash
+# リポジトリをクローン
+git clone --recursive https://github.com/takayamaekawa/tui-tools.git
+cd tui-tools
+
 # すべてのツールを一括インストール
 ./install.sh
 
@@ -58,3 +82,43 @@ python figma_tui.py
 ## ライセンス
 
 各ツールのライセンスに従います。
+
+## 📄 GitHub Pages
+
+このプロジェクトには統合的なGitHub Pagesサイトが含まれています：
+
+- **メインページ**: プロジェクト概要とナビゲーション
+- **ツール詳細**: 各TUIツールの詳細情報
+- **デモ**: ライブデモとスクリーンショット
+- **ダウンロード**: インストール方法とダウンロードリンク
+
+### セットアップ
+
+```bash
+# GitHub Pagesサイトをセットアップ
+./setup-pages.sh
+
+# GitHubリポジトリでPages機能を有効化
+# Settings > Pages > Source: GitHub Actions を選択
+```
+
+### ローカル開発
+
+```bash
+# 静的サイトをローカルで確認
+cd docs
+python -m http.server 8000
+
+# ブラウザで http://localhost:8000 を開く
+```
+
+### カスタマイズ
+
+- `docs/index.html`: メインページの編集
+- `docs/css/style.css`: スタイルの変更
+- `docs/js/main.js`: JavaScript機能の追加
+- `docs/demos/`: デモページの編集
+
+### 自動デプロイ
+
+GitHubにpushすると自動的にGitHub Pagesサイトが更新されます。
