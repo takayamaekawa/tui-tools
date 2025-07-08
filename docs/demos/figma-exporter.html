@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma Image Exporter TUI - Demo</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Figma Image Exporter TUI</h1>
+            <p class="subtitle">デモンストレーション</p>
+        </header>
+        
+        <main>
+            <section>
+                <h2>📋 機能概要</h2>
+                <p>Figma Image Exporter TUIは、FigmaのURLから画像を効率的に取得してローカルに保存するツールです。</p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>🔗 URL一括処理</h3>
+                        <p>JSONファイルから複数のFigma URLを一括読み込み</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>☑️ 選択式ダウンロード</h3>
+                        <p>チェックボックスで必要な画像のみを選択</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>📦 一括ダウンロード</h3>
+                        <p>すべての画像を一度にダウンロード</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <h2>🎬 使用方法</h2>
+                <div class="code-block">
+                    <pre><code># Figma Image Exporter TUIを起動
+cd figma-image-exporter-tui
+python figma_tui.py
+
+# TUIインターフェースが起動します
+# 1. URLsから画像リンクを取得
+# 2. 選択して画像をダウンロード
+# 3. すべてをダウンロード</code></pre>
+                </div>
+            </section>
+            
+            <section>
+                <h2>⚙️ 設定例</h2>
+                <div class="code-block">
+                    <pre><code># figma_urls.json の例
+[
+  {
+    "name": "Design 1",
+    "url": "https://www.figma.com/file/ABC123/Design?node-id=1%3A2"
+  },
+  {
+    "name": "Design 2",
+    "url": "https://www.figma.com/file/DEF456/Another?node-id=2%3A3"
+  }
+]</code></pre>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p><a href="../index.html">← メインページに戻る</a></p>
+        </footer>
+    </div>
+</body>
+</html>
