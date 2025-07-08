@@ -19,6 +19,24 @@ fi
 
 echo "Creating orphan gh-pages branch..."
 
+# 既存のgh-pagesブランチをチェック
+if git show-ref --verify --quiet refs/heads/gh-pages; then
+    echo "Warning: A gh-pages branch already exists."
+    echo "Do you want to delete the existing gh-pages branch and create a new one? (y/n)"
+    read -r response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            echo "Deleting existing gh-pages branch..."
+            git branch -D gh-pages
+            echo "Existing gh-pages branch deleted."
+            ;;
+        *)
+            echo "Aborted. Please manually delete the gh-pages branch if you want to proceed."
+            exit 1
+            ;;
+    esac
+fi
+
 # gh-pagesブランチを作成
 git checkout --orphan gh-pages
 
