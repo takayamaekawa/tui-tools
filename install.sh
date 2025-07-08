@@ -80,16 +80,19 @@ install_dependencies() {
   esac
 }
 
-# サブモジュールの初期化
-init_submodules() {
-  log_info "サブモジュールを初期化中..."
+# ディレクトリ存在チェック
+check_directories() {
+  log_info "ツールディレクトリをチェック中..."
 
-  if [ -f ".gitmodules" ]; then
-    git submodule update --init --recursive
-    log_success "サブモジュールを初期化しました"
-  else
-    log_warning ".gitmodules が見つかりません。サブモジュールをスキップします。"
+  if [ ! -d "discord-exporter-tui" ]; then
+    log_warning "discord-exporter-tui ディレクトリが見つかりません"
   fi
+
+  if [ ! -d "figma-image-exporter-tui" ]; then
+    log_warning "figma-image-exporter-tui ディレクトリが見つかりません"
+  fi
+
+  log_success "ディレクトリチェック完了"
 }
 
 # 実行権限の設定
@@ -195,8 +198,8 @@ main() {
   check_python
   echo
 
-  # サブモジュール初期化
-  init_submodules
+  # ディレクトリチェック
+  check_directories
   echo
 
   # 実行権限設定
