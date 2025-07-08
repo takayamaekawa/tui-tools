@@ -17,19 +17,19 @@ TUIベースのツール集です。各ツールは独立したサブモジュ�
 ### Discord Exporter TUI
 ```bash
 # 1行でインストール
-curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash -s discord-exporter
+curl -fsSL https://provider.maekawa.dev/install.sh | bash -s discord-exporter
 ```
 
 ### Figma Image Exporter TUI
 ```bash
 # 1行でインストール
-curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash -s figma-exporter
+curl -fsSL https://provider.maekawa.dev/install.sh | bash -s figma-exporter
 ```
 
 ### 全ツール一括インストール
 ```bash
 # すべてのツールを一括インストール
-curl -fsSL https://raw.githubusercontent.com/takayamaekawa/tui-tools/main/install.sh | bash
+curl -fsSL https://provider.maekawa.dev/install.sh | bash
 ```
 
 ## インストール（手動）
