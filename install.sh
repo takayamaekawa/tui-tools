@@ -33,22 +33,35 @@ log_error() {
 # リポジトリをクローン
 clone_repository() {
   local repo_url="https://github.com/takayamaekawa/tui-tools.git"
+  local tmp_dir
   local clone_dir="tui-tools"
   
   log_info "リポジトリをクローンしています..."
   
-  if [ -d "$clone_dir" ]; then
-    log_info "既存のディレクトリを削除します: $clone_dir"
-    rm -rf "$clone_dir"
-  fi
+  # 一時ディレクトリを作成
+  tmp_dir=$(mktemp -d)
+  cd "$tmp_dir"
   
   if ! git clone "$repo_url" "$clone_dir"; then
     log_error "リポジトリのクローンに失敗しました"
+    rm -rf "$tmp_dir"
     exit 1
   fi
   
   cd "$clone_dir"
   log_success "リポジトリをクローンしました"
+  
+  # サブモジュールを初期化
+  log_info "サブモジュールを初期化中..."
+  if ! git submodule update --init --recursive; then
+    log_error "サブモジュールの初期化に失敗しました"
+    rm -rf "$tmp_dir"
+    exit 1
+  fi
+  log_success "サブモジュールの初期化完了"
+  
+  # 一時ディレクトリのパスを環境変数として保存
+  export INSTALL_TMP_DIR="$tmp_dir"
 }
 
 # make が利用可能かチェック
@@ -178,6 +191,12 @@ main() {
   echo "2. 各ツールの設定ファイルでトークンを設定"
   echo "3. ツールの実行: discord_exporter または figma_exporter"
   echo
+  
+  # 一時ディレクトリのクリーンアップ
+  if [ -n "$INSTALL_TMP_DIR" ] && [ -d "$INSTALL_TMP_DIR" ]; then
+    log_info "一時ファイルをクリーンアップ中..."
+    rm -rf "$INSTALL_TMP_DIR"
+  fi
 }
 
 # スクリプト実行
