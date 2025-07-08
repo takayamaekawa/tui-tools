@@ -1,0 +1,3 @@
+[submodule "figma-image-exporter-tui"]
+	path = figma-image-exporter-tui
+	url = https://github.com/takayamaekawa/figma-image-exporter-tui.git
