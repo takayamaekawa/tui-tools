@@ -1,3 +1,6 @@
 [submodule "figma-image-exporter-tui"]
 	path = figma-image-exporter-tui
 	url = https://github.com/takayamaekawa/figma-image-exporter-tui.git
+[submodule "discord-exporter-tui"]
+	path = discord-exporter-tui
+	url = https://github.com/takayamaekawa/discord-exporter-tui.git
