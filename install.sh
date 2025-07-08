@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TUI Tools Collection - インストールスクリプト
-# 使用方法: ./install.sh [tool-name]
+# 使用方法: curl -fsSL https://provider.maekawa.dev/install.sh | bash [-s tool-name]
 # tool-name: discord-exporter, figma-exporter, または空（全ツール）
 
 set -e
@@ -30,155 +30,98 @@ log_error() {
   echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Python バージョンチェック
-check_python() {
-  log_info "Pythonのバージョンをチェック中..."
+# リポジトリをクローン
+clone_repository() {
+  local repo_url="https://github.com/takayamaekawa/tui-tools.git"
+  local clone_dir="tui-tools"
+  
+  log_info "リポジトリをクローンしています..."
+  
+  if [ -d "$clone_dir" ]; then
+    log_info "既存のディレクトリを削除します: $clone_dir"
+    rm -rf "$clone_dir"
+  fi
+  
+  if ! git clone "$repo_url" "$clone_dir"; then
+    log_error "リポジトリのクローンに失敗しました"
+    exit 1
+  fi
+  
+  cd "$clone_dir"
+  log_success "リポジトリをクローンしました"
+}
 
-  if command -v python3 &>/dev/null; then
-    PYTHON_VERSION=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-    log_info "Python $PYTHON_VERSION が見つかりました"
-
-    # Python 3.8+ が必要
-    if python3 -c 'import sys; exit(0 if sys.version_info >= (3, 8) else 1)'; then
-      log_success "Python バージョンチェック完了"
-    else
-      log_error "Python 3.8以上が必要です。現在のバージョン: $PYTHON_VERSION"
-      exit 1
-    fi
-  else
-    log_error "Python3が見つかりません。Pythonをインストールしてください。"
+# make が利用可能かチェック
+check_make() {
+  if ! command -v make &>/dev/null; then
+    log_error "make が見つかりません。makeをインストールしてください。"
+    echo "Ubuntu/Debian: sudo apt install make"
+    echo "CentOS/RHEL: sudo yum install make"
+    echo "macOS: xcode-select --install"
     exit 1
   fi
 }
 
-# 依存関係のインストール
-install_dependencies() {
-  local tool_name=$1
-  log_info "$tool_name の依存関係をインストール中..."
-
-  case $tool_name in
-  "discord-exporter")
-    if [ -f "discord-exporter-tui/requirements.txt" ]; then
-      pip3 install -r discord-exporter-tui/requirements.txt
-      log_success "Discord Exporter の依存関係をインストールしました"
-    else
-      log_warning "requirements.txt が見つかりません: discord-exporter-tui/requirements.txt"
-    fi
-    ;;
-  "figma-exporter")
-    if [ -f "figma-image-exporter-tui/requirements_tui.txt" ]; then
-      pip3 install -r figma-image-exporter-tui/requirements_tui.txt
-      log_success "Figma Exporter の依存関係をインストールしました"
-    else
-      log_warning "requirements_tui.txt が見つかりません: figma-image-exporter-tui/requirements_tui.txt"
-    fi
-    ;;
-  *)
-    log_error "未知のツール名: $tool_name"
-    exit 1
-    ;;
-  esac
-}
-
-# ディレクトリ存在チェック
-check_directories() {
-  log_info "ツールディレクトリをチェック中..."
-
-  if [ ! -d "discord-exporter-tui" ]; then
-    log_warning "discord-exporter-tui ディレクトリが見つかりません"
-  fi
-
-  if [ ! -d "figma-image-exporter-tui" ]; then
-    log_warning "figma-image-exporter-tui ディレクトリが見つかりません"
-  fi
-
-  log_success "ディレクトリチェック完了"
-}
-
-# 実行権限の設定
-set_permissions() {
-  log_info "実行権限を設定中..."
-
-  find . -name "*.sh" -type f -exec chmod +x {} \;
-  find . -name "*.py" -type f -exec chmod +x {} \;
-
-  log_success "実行権限を設定しました"
-}
-
-# Discord Exporter の設定
-setup_discord_exporter() {
-  log_info "Discord Exporter を設定中..."
-
+# Discord Exporter のインストール
+install_discord_exporter() {
+  log_info "Discord Exporter をインストール中..."
+  
   if [ -d "discord-exporter-tui" ]; then
     cd discord-exporter-tui
-
-    # 設定ファイルのサンプルを作成
-    if [ ! -f "config.json" ]; then
-      cat >config.json <<'EOF'
-{
-    "discord_token": "",
-    "export_format": "xlsx",
-    "output_directory": "exports",
-    "max_messages": 1000
-}
-EOF
-      log_info "config.json のサンプルを作成しました"
-      log_warning "discord_token を設定してください"
+    
+    if [ -f "Makefile" ]; then
+      if make install; then
+        log_success "Discord Exporter のインストール完了"
+      else
+        log_error "Discord Exporter のインストールに失敗しました"
+        exit 1
+      fi
+    else
+      log_error "Makefile が見つかりません"
+      exit 1
     fi
-
+    
     cd ..
-    log_success "Discord Exporter の設定完了"
   else
-    log_warning "discord-exporter-tui ディレクトリが見つかりません"
+    log_error "discord-exporter-tui ディレクトリが見つかりません"
+    exit 1
   fi
 }
 
-# Figma Exporter の設定
-setup_figma_exporter() {
-  log_info "Figma Exporter を設定中..."
-
+# Figma Exporter のインストール
+install_figma_exporter() {
+  log_info "Figma Exporter をインストール中..."
+  
   if [ -d "figma-image-exporter-tui" ]; then
     cd figma-image-exporter-tui
-
-    # assetsディレクトリを作成
-    mkdir -p assets
-
-    # 設定ファイルのサンプルを作成
-    if [ ! -f "figma_config.json" ]; then
-      cat >figma_config.json <<'EOF'
-{
-    "figma_token": "",
-    "urls_file": "figma_urls.json",
-    "output_file": "figma_images.json",
-    "assets_dir": "assets"
-}
-EOF
-      log_info "figma_config.json のサンプルを作成しました"
-      log_warning "figma_token を設定してください"
+    
+    if [ -f "Makefile" ]; then
+      if make install; then
+        log_success "Figma Exporter のインストール完了"
+      else
+        log_error "Figma Exporter のインストールに失敗しました"
+        exit 1
+      fi
+    else
+      log_error "Makefile が見つかりません"
+      exit 1
     fi
-
-    # サンプルURLファイルを作成
-    if [ ! -f "figma_urls.json" ]; then
-      cat >figma_urls.json <<'EOF'
-[
-  {
-    "name": "Sample Design 1",
-    "url": "https://www.figma.com/file/ABC123/Sample-Design?node-id=1%3A2&t=xyz123"
-  },
-  {
-    "name": "Sample Design 2", 
-    "url": "https://www.figma.com/file/DEF456/Another-Design?node-id=2%3A3&t=abc456"
-  }
-]
-EOF
-      log_info "figma_urls.json のサンプルを作成しました"
-    fi
-
+    
     cd ..
-    log_success "Figma Exporter の設定完了"
   else
-    log_warning "figma-image-exporter-tui ディレクトリが見つかりません"
+    log_error "figma-image-exporter-tui ディレクトリが見つかりません"
+    exit 1
   fi
+}
+
+# 使用方法の表示
+show_usage() {
+  echo ""
+  echo "使用方法:"
+  echo "  Discord Exporter: curl -fsSL https://provider.maekawa.dev/install.sh | bash -s discord-exporter"
+  echo "  Figma Exporter:   curl -fsSL https://provider.maekawa.dev/install.sh | bash -s figma-exporter"
+  echo "  全ツール:         curl -fsSL https://provider.maekawa.dev/install.sh | bash"
+  echo ""
 }
 
 # メイン処理
@@ -194,38 +137,35 @@ main() {
   log_info "インストールを開始します: $TOOL_NAME"
   echo
 
-  # Python チェック
-  check_python
+  # 依存関係チェック
+  if ! command -v git &>/dev/null; then
+    log_error "git が見つかりません。gitをインストールしてください。"
+    exit 1
+  fi
+  
+  check_make
   echo
 
-  # ディレクトリチェック
-  check_directories
-  echo
-
-  # 実行権限設定
-  set_permissions
+  # リポジトリクローン
+  clone_repository
   echo
 
   # ツール別インストール
   case $TOOL_NAME in
   "discord-exporter")
-    install_dependencies "discord-exporter"
-    setup_discord_exporter
+    install_discord_exporter
     ;;
   "figma-exporter")
-    install_dependencies "figma-exporter"
-    setup_figma_exporter
+    install_figma_exporter
     ;;
   "all")
     log_info "全ツールをインストールします..."
-    install_dependencies "discord-exporter"
-    install_dependencies "figma-exporter"
-    setup_discord_exporter
-    setup_figma_exporter
+    install_discord_exporter
+    install_figma_exporter
     ;;
   *)
     log_error "無効なツール名: $TOOL_NAME"
-    echo "使用方法: $0 [discord-exporter|figma-exporter|all]"
+    show_usage
     exit 1
     ;;
   esac
@@ -234,9 +174,9 @@ main() {
   log_success "インストール完了！"
   echo
   echo "次のステップ:"
-  echo "1. 各ツールの設定ファイルでトークンを設定"
-  echo "2. GitHub Pages用のセットアップ: ./setup-pages.sh"
-  echo "3. ツールの実行: cd [tool-directory] && python3 [main-script]"
+  echo "1. discord_exporter --help または figma_exporter --help で使用方法を確認"
+  echo "2. 各ツールの設定ファイルでトークンを設定"
+  echo "3. ツールの実行: discord_exporter または figma_exporter"
   echo
 }
 
